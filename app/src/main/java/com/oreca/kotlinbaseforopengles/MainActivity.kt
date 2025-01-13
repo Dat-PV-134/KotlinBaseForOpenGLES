@@ -1,7 +1,10 @@
 package com.oreca.kotlinbaseforopengles
 
 import android.app.ActivityManager
+import android.opengl.GLSurfaceView
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -22,14 +25,13 @@ class MainActivity : AppCompatActivity() {
     private fun initOpenGLES() {
         val activityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
         val configurationInfo = activityManager.deviceConfigurationInfo
-        val supportsEs3 = configurationInfo.reqGlEsVersion >= 0x30000
+        val supportsEs32 = configurationInfo.reqGlEsVersion >= 0x30002
 
-        if (supportsEs3) {
+        if (supportsEs32) {
             binding.myGLSurfaceView.setEGLContextClientVersion(3)
-            binding.myGLSurfaceView.setRenderer(MyBaseRenderer())
-            rendererSet = true
+            binding.myGLSurfaceView.setRenderer(MyBaseRenderer(this@MainActivity))
         } else {
-            Toast.makeText(this@MainActivity, "This device doesn't support OpenGL ES 3.0", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MainActivity, "This device doesn't support OpenGL ES 3.2", Toast.LENGTH_SHORT).show()
             return
         }
     }
