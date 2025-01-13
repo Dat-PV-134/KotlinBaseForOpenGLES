@@ -1,6 +1,8 @@
 package com.oreca.kotlinbaseforopengles
 
 import android.content.Context
+import android.opengl.GLES20
+import android.opengl.GLES20.GL_UNSIGNED_INT
 import android.opengl.GLES32
 import android.opengl.GLES32.GL_COLOR_BUFFER_BIT
 import android.opengl.GLES32.glClear
@@ -20,9 +22,9 @@ import javax.microedition.khronos.opengles.GL10
 class MyBaseRenderer(private val context: Context) : Renderer {
     // Vertices data
     private val vertices: FloatArray = floatArrayOf(
-        0.0f, 0.5f, 0.0f,
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
+        0.0f, 0.5f, 0.0f, 1.0f, 0.5f, 0.5f, 1.0f,   // z, y, z, r, g, b, a
+        -0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 0.5f, 1.0f,
+        0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 1.0f, 1.0f
     )
 
     // variable to store program, vbo and vao ids
@@ -32,7 +34,7 @@ class MyBaseRenderer(private val context: Context) : Renderer {
 
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         // set color in color buffer to light red
-        glClearColor(1.0f, 0.5f, 0.5f, 0f)
+        // glClearColor(1.0f, 0.5f, 0.5f, 0f)
 
         // Create program linked vertex and fragment shader
         val vertexShaderSource = TextResourceReader.readTextFileFromResource(context, R.raw.vertex_shader)
@@ -68,8 +70,10 @@ class MyBaseRenderer(private val context: Context) : Renderer {
         GLES32.glBufferData(GLES32.GL_ARRAY_BUFFER, vertices.size * Float.SIZE_BYTES, vertexBuffer, GLES32.GL_STATIC_DRAW)
 
         // Define the vertex attribute pointer
-        GLES32.glVertexAttribPointer(0, 3, GLES32.GL_FLOAT, false, 3 * Float.SIZE_BYTES, 0)
+        GLES32.glVertexAttribPointer(0, 3, GLES32.GL_FLOAT, false, 7 * Float.SIZE_BYTES, 0)
         GLES32.glEnableVertexAttribArray(0)
+        GLES32.glVertexAttribPointer(1, 3, GLES32.GL_FLOAT, false, 7 * Float.SIZE_BYTES, 3 * Float.SIZE_BYTES)
+        GLES32.glEnableVertexAttribArray(1)
 
         // Unbind the VBO & VAO when not use
         GLES32.glBindBuffer(GLES32.GL_ARRAY_BUFFER, 0)
@@ -85,7 +89,7 @@ class MyBaseRenderer(private val context: Context) : Renderer {
 
         // rebind vao and draw triangle
         GLES32.glBindVertexArray(VAO)
-        GLES32.glDrawArrays(GLES32.GL_TRIANGLES, 0, 3)
+        GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, 3)
         GLES32.glBindVertexArray(0)
     }
 }

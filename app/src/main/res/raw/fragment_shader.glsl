@@ -2,9 +2,9 @@
 
 precision mediump float;  // Define precision for float types
 
-in vec3 ourColor;
+in vec4 ourColor;
 out vec4 FragColor;
 
 void main() {
-    FragColor = vec4(ourColor.x, ourColor.y, ourColor.z, 1.0);
+    FragColor = ourColor;
 }
