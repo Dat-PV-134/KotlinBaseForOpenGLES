@@ -2,11 +2,9 @@ package com.oreca.kotlinbaseforopengles
 
 import android.content.Context
 import android.opengl.GLES20
-import android.opengl.GLES20.GL_UNSIGNED_INT
 import android.opengl.GLES32
 import android.opengl.GLES32.GL_COLOR_BUFFER_BIT
 import android.opengl.GLES32.glClear
-import android.opengl.GLES32.glClearColor
 import android.opengl.GLES32.glViewport
 import android.opengl.GLSurfaceView.Renderer
 import com.oreca.kotlinbaseforopengles.util.LoggerConfig

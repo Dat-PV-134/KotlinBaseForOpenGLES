@@ -1,10 +1,7 @@
 package com.oreca.kotlinbaseforopengles
 
 import android.app.ActivityManager
-import android.opengl.GLSurfaceView
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
