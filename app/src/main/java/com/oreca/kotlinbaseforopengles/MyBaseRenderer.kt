@@ -7,6 +7,7 @@ import android.opengl.GLES32.GL_COLOR_BUFFER_BIT
 import android.opengl.GLES32.glClear
 import android.opengl.GLES32.glViewport
 import android.opengl.GLSurfaceView.Renderer
+import android.opengl.Matrix
 import com.oreca.kotlinbaseforopengles.util.LoggerConfig
 import com.oreca.kotlinbaseforopengles.util.ShaderHelper
 import com.oreca.kotlinbaseforopengles.util.TextResourceReader
@@ -24,6 +25,8 @@ class MyBaseRenderer(private val context: Context) : Renderer {
         -0.5f, -0.5f, 0.0f, 0.5f, 1.0f, 0.5f, 1.0f,
         0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 1.0f, 1.0f
     )
+
+    private val projectionMatrix = FloatArray(16);
 
     // variable to store program, vbo and vao ids
     private var program = 0
@@ -79,6 +82,14 @@ class MyBaseRenderer(private val context: Context) : Renderer {
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
+        val aspectRatio = if (width > height) width.toFloat() / height else height.toFloat() / width
+        if (width > height) {
+            Matrix.orthoM(projectionMatrix, 0, -aspectRatio, aspectRatio, -1f, 1f, -1f, 1f)
+        } else {
+            Matrix.orthoM(projectionMatrix, 0, -1f, 1f, -aspectRatio, aspectRatio, -1f, 1f)
+        }
+        val uniformLocation = GLES32.glGetUniformLocation(program, "projectionMatrix")
+        GLES32.glUniformMatrix4fv(uniformLocation, 1, false, projectionMatrix, 0)
         glViewport(0, 0, width, height)
     }
 
